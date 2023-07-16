@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Smart Dustbin</title>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+     <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyC0IYzD36dJS3-914Qx7T1bHNqAtw9B_XI",
+  authDomain: "esp-01-test.firebaseapp.com",
+  databaseURL: "https://esp-01-test-default-rtdb.firebaseio.com",
+  projectId: "esp-01-test",
+  storageBucket: "esp-01-test.appspot.com",
+  messagingSenderId: "835672435504",
+  appId: "1:835672435504:web:0fb026e9734d7d5931f6f5"
+};
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+      <style>
+        body{
+            margin:0vw;
+            background-color:white;
+        }
+        h1{
+            position: absolute;
+            left:15vw;
+            font-size:7vw;
+            top:1vw;
+            margin-top:0vw;
+            color:black;
+            font-family:Arial, Helvetica, sans-serif
+        }
+        h2{
+            position: absolute;
+            left:1vw;
+            font-size:5vw;
+            top:10vw;
+            margin-top:0vw;
+            color:black;
+            font-family:Arial, Helvetica, sans-serif
+        }
+        #area1{
+            position:absolute;
+            top:15vw;
+            left:5vw;
+            min-width:30vw;
+            min-height:13vw;
+            /* border-style:solid; */
+            /* border-color:black; */
+        }
+        #area1text{
+            font-size:4vw;
+            color:lightgreen;
+        }
+        #area1bar{
+            position:absolute;
+            left:0vw;
+            top:5vw;
+            background-color:none;
+            min-width:90vw;
+            min-height:2.5vw;
+            border-style:solid;
+            border-width:0.4vw;
+        }
+        #area1bar1{
+            position:absolute;
+            left:0.5vw;
+            top:5.3vw;
+            min-width:0px;
+            min-height:2.5vw;
+            background-color: lightgreen;
+        }
+        #area1p{
+            position: absolute;
+            font-size:2vw;
+            left:13vw;
+            top:3.5vw;
+        }
+    </style>
+</head>
+<body>
+    <!-- <h1>चतुर कूड़ेदान</h1> -->
+    <h1>Nagar Nigam Udaipur</h1>
+    <h2>(By- Shresth Sharma and Ratujeet Singh)</h2>
+    <div id="area1">
+        <label id="area1text">Area1 Status:-</label>
+        <div id="area1bar"></div>
+        <div id="area1bar1"></div>
+        <p id="area1p">Loading</p>
+    </div>
+
+    <script>
+        var screenWidth = window.innerWidth;
+        barwidth = screenWidth/100*90
+        var n1=0;
+        window.addEventListener("resize", function() {
+            var screenWidth = window.innerWidth;
+            barwidth = screenWidth/100*30
+            b = barwidth/100*n1
+            width = document.getElementById('area1bar1').style.minWidth = b+'px';
+            console.log("Window resized!");
+        });
+        database = firebase.database();
+        repeat()
+        function repeat(){
+            var gameStateRef  = database.ref('data/a');
+                gameStateRef.on("value",function(data){
+                n1 = data.val();
+                n1 = 100-n1
+                if(n1 > 70){
+                    document.getElementById('area1bar1').style.backgroundColor = 'red';
+                }
+                else if(n1 > 50){
+                    document.getElementById('area1bar1').style.backgroundColor = 'orange';
+                }
+                else if(n1 > 30){
+                    document.getElementById('area1bar1').style.backgroundColor = 'yellow';
+                }
+                else{
+                    document.getElementById('area1bar1').style.backgroundColor = 'lightgreen';
+                }
+                console.log(n1)
+                var screenWidth = window.innerWidth;
+                barwidth = screenWidth/100*90
+                b = barwidth/100*n1
+                width = document.getElementById('area1bar1').style.minWidth = b+'px';
+                c = document.getElementById('area1p').innerHTML = n1+'%';
+                console.log("Window resized!");
+            });
+        }
+        setInterval(repeat, 1000)
+    </script>
+</body>
+</html>
